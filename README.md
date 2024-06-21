@@ -58,6 +58,7 @@ graph TD;
     4-->9;
 ```
 
+```mermaid
 graph TD;
     -2-->0;
     -2-->2;
