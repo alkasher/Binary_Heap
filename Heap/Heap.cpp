@@ -1,18 +1,26 @@
 ﻿#include <iostream>
+#include <vector>
 
 template <class T>
 class Heap {
 private:
-    T* a;
+    std::vector<T> a;
     int len;
 public:
-    Heap<T>(const T* a, int len) : len(len) {
+    Heap<T>(const T* b, int len) : len(len) {
         if (len < 0) throw 'e';
-        if (!(this->a = new T[len])) throw 'e';
         for (int i = 0; i < len; ++i) {
-            this->a[i] = a[i];
+            a.push_back(b[i]);
         }
     }
+    Heap<T>(const std::vector<T> b, int len) : len(len) {
+        if (len < 0) throw 'e';
+        for (int i = 0; i < len; ++i) {
+            a.push_back(b[i]);
+        }
+    }
+
+    Heap<T>() : len(0) {}
     T getMin() const {
         if (len == 0) throw 'e';
         return a[0];
@@ -55,17 +63,8 @@ public:
     }
 
     void Insert(T elem) {
-        T* b = new T[++len];
-        for (int i = 0; i < len-1; ++i) {
-            b[i] = a[i];
-        }
-        b[len - 1] = elem;
-        delete[] a;
-        a = new T[len];
-        for (int i = 0; i < len; ++i) {
-            a[i] = b[i];
-        }
-        delete[] b;
+        a.push_back(elem);
+        ++len;
         SiftUp(len - 1);
     }
 
@@ -74,21 +73,35 @@ public:
         a[position] -= delta;
         SiftUp(position);
     }
-
-    ~Heap() {
-        delete[] a;
-    }
-
 };
 
+template <class T>
+Heap<T> heapify(const std::vector<T>& vect) {
+    Heap<T> h(vect,vect.size());
+    for (int i = vect.size() - 1; i >= 0; --i) {
+        h.SiftDown(i);
+    }
+    return h;
+}
+
+template <class T>
+void HeapSort(std::vector<T>& vect) {
+    Heap<T> h = heapify(vect);
+    for (int i = 0; i < vect.size(); ++i) {
+        vect[i] = h.getMin();
+        h.ExtractMin();
+    }
+}
 
 int main()
 {
-    int n = 10;
-    int* a = new int[n];
-    for (int i = 0; i < 10; ++i) {
-        a[i] = i;
+    int n = 14;
+    std::vector<int> vect;
+    for (int i = 0; i < n; ++i) {
+        vect.push_back(i * (i + 3) * (-5 + i) + std::log10(i + 2) - std::pow(0.5, i));
     }
-    
-    Heap<int> l(a, 10);
+    for (auto x : vect) std::cout << x << " ";
+    std::cout << '\n';
+    HeapSort(vect);
+    for (auto x : vect) std::cout << x << " ";
 }
