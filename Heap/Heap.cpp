@@ -13,12 +13,13 @@ public:
             a.push_back(b[i]);
         }
     }
-    Heap<T>(const std::vector<T> b, int len) : len(len) {
+    Heap<T>(const std::vector<T>& b, int len) : len(len) {
         if (len < 0) throw 'e';
         for (int i = 0; i < len; ++i) {
             a.push_back(b[i]);
         }
     }
+
 
     Heap<T>() : len(0) {}
     T getMin() const {
@@ -26,28 +27,28 @@ public:
         return a[0];
     }
     void print() {
-        
+
         for (int i = 0; i < len; ++i) {
-                std::cout << a[i] << " ";
-            } 
+            std::cout << a[i] << " ";
+        }
         std::cout << '\n';
     }
     void SiftUp(const int v) {
         if (v >= len || v < 0) throw 'e'; //index v out of a
         if (v == 0) return;
-        int p = v / 2 - (v%2==0);
-        if (a[v] < a[p]){ 
+        int p = v / 2 - (v % 2 == 0);
+        if (a[v] < a[p]) {
             std::swap(a[v], a[p]);
             SiftUp(p);
         }
     }
     void SiftDown(const int v) {
         int u = 0;
-        if (2 * v +1 >= len) return;
-        
-        u = 2 * v+1;
+        if (2 * v + 1 >= len) return;
+
+        u = 2 * v + 1;
         if (2 * v + 2 < len) {
-            u = a[2 * v + 1] < a[2 * v + 2] ? 2 * v + 1: 2 * v + 2;
+            u = a[2 * v + 1] < a[2 * v + 2] ? 2 * v + 1 : 2 * v + 2;
         }
 
         if (a[u] < a[v]) {
@@ -77,7 +78,7 @@ public:
 
 template <class T>
 Heap<T> heapify(const std::vector<T>& vect) {
-    Heap<T> h(vect,vect.size());
+    Heap<T> h(vect, vect.size());
     for (int i = vect.size() - 1; i >= 0; --i) {
         h.SiftDown(i);
     }
@@ -98,7 +99,7 @@ int main()
     int n = 14;
     std::vector<int> vect;
     for (int i = 0; i < n; ++i) {
-        vect.push_back(i * (i + 3) * (-5 + i) + std::log10(i + 2) - std::pow(0.5, i));
+        vect.push_back(i * (i + 3) * (-5 + i) + std::log10(i + 1) - std::pow(0.5, i));
     }
     for (auto x : vect) std::cout << x << " ";
     std::cout << '\n';
